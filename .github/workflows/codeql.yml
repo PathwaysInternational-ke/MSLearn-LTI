@@ -46,6 +46,7 @@ jobs:
       - name: Build C# project manually
         if: matrix.language == 'csharp'
         run: |
+          cd backend
           dotnet restore
           dotnet build --no-restore --configuration Release
 
