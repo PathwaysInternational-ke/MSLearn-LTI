@@ -59,4 +59,4 @@ jobs:
           app-name: 'lmslearn'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C4F5CB4880974558A67EDAEE9263DB31 }}
-          package: .
+          package: ./aspnetcore-app
