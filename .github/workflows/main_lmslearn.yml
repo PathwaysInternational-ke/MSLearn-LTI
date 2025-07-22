@@ -27,7 +27,7 @@ jobs:
           dotnet nuget remove source nuget.org || true
           dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 
-      - name: Add NuGet config file
+      - name: Add NuGet config file at root
         run: |
           echo '<?xml version="1.0" encoding="utf-8"?>' > nuget.config
           echo '<configuration>' >> nuget.config
@@ -38,16 +38,13 @@ jobs:
           echo '</configuration>' >> nuget.config
 
       - name: Restore dependencies
-        run: dotnet restore Edna.Lite.sln --configfile ../../nuget.config
-        working-directory: backend
+        run: dotnet restore backend/Edna.Lite.sln --configfile nuget.config
 
       - name: Build
-        run: dotnet build Edna.Lite.sln --configuration Release --no-restore
-        working-directory: backend
+        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish Edna.Lite.sln --configuration Release --output ./publish --no-build
-        working-directory: backend
+        run: dotnet publish backend/Edna.Lite.sln --configuration Release --output backend/publish --no-build
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
