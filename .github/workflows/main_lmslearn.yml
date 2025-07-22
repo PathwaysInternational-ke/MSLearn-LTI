@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.NET Core app to Azure Web App - lmslearn
 
 on:
@@ -30,15 +27,12 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore Edna.Lite.sln
-        working-directory: backend
 
       - name: Build
         run: dotnet build Edna.Lite.sln --configuration Release --no-restore
-        working-directory: backend
 
       - name: Publish
-        run: dotnet publish Edna.Lite.sln --configuration Release --output ./publish --no-build
-        working-directory: backend
+        run: dotnet publish Edna.Lite.sln --configuration Release --output ./backend/publish --no-build
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
