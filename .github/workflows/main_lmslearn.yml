@@ -22,19 +22,19 @@ jobs:
       - name: Show .NET SDK info (debug)
         run: dotnet --info
 
-      - name: Add NuGet config file to correct directory
+      - name: Add NuGet config file
         run: |
-          echo '<?xml version="1.0" encoding="utf-8"?>' > ./MSLearn-LTI/nuget.config
-          echo '<configuration>' >> ./MSLearn-LTI/nuget.config
-          echo '  <packageSources>' >> ./MSLearn-LTI/nuget.config
-          echo '    <clear />' >> ./MSLearn-LTI/nuget.config
-          echo '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />' >> ./MSLearn-LTI/nuget.config
-          echo '  </packageSources>' >> ./MSLearn-LTI/nuget.config
-          echo '</configuration>' >> ./MSLearn-LTI/nuget.config
-        working-directory: .
+          echo '<?xml version="1.0" encoding="utf-8"?>' > nuget.config
+          echo '<configuration>' >> nuget.config
+          echo '  <packageSources>' >> nuget.config
+          echo '    <clear />' >> nuget.config
+          echo '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />' >> nuget.config
+          echo '  </packageSources>' >> nuget.config
+          echo '</configuration>' >> nuget.config
+        working-directory: ./MSLearn-LTI
 
       - name: Restore dependencies
-        run: dotnet restore backend/Edna.Lite.sln --configfile ../nuget.config
+        run: dotnet restore backend/Edna.Lite.sln --configfile nuget.config
         working-directory: ./MSLearn-LTI
 
       - name: Build
