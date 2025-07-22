@@ -31,21 +31,25 @@ jobs:
           echo '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />' >> nuget.config
           echo '  </packageSources>' >> nuget.config
           echo '</configuration>' >> nuget.config
+        working-directory: ./MSLearn-LTI
 
       - name: Restore dependencies
         run: dotnet restore backend/Edna.Lite.sln --configfile nuget.config
+        working-directory: ./MSLearn-LTI
 
       - name: Build
         run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
+        working-directory: ./MSLearn-LTI
 
       - name: Publish
         run: dotnet publish backend/Edna.Lite.sln --configuration Release --output backend/publish --no-build
+        working-directory: ./MSLearn-LTI
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: aspnetcore-app
-          path: backend/publish
+          path: MSLearn-LTI/backend/publish
 
   deploy:
     runs-on: ubuntu-latest
