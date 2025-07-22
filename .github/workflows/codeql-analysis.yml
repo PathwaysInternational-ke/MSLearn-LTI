@@ -23,22 +23,21 @@ jobs:
         with:
           fetch-depth: 2
 
-      - run: git checkout HEAD^2
-        if: ${{ github.event_name == 'pull_request' }}
-
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'  # You can adjust this based on your project
+          dotnet-version: '8.0' 
+
+      - name: Restore NuGet packages
+        run: dotnet restore backend/Edna.Lite.sln
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
 
-      # ❌ Replace autobuild with manual build
       - name: Build C# Solution
-        run: dotnet build backend/Edna.Lite.sln --configuration Release
+        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
