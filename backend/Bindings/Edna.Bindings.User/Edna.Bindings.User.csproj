@@ -1,6 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>10</LangVersion> <!-- .NET 6 uses C# 10 -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utils\Edna.Utils.Http\Edna.Utils.Http\Edna.Utils.Http.csproj" />
+  </ItemGroup>
+
+</Project>
+
+
+<!-- <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
@@ -14,4 +33,4 @@
     <ProjectReference Include="..\..\Utils\Edna.Utils.Http\Edna.Utils.Http\Edna.Utils.Http.csproj" />
   </ItemGroup>
 
-</Project>
+</Project> -->
