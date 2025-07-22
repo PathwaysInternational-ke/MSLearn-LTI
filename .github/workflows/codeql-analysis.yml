@@ -23,10 +23,15 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup .NET SDK
+      - name: Install .NET Core 3.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0' 
+          dotnet-version: '3.0.103'
+
+      - name: Setup .NET SDK 8.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
 
       - name: Restore NuGet packages
         run: dotnet restore backend/Edna.Lite.sln
