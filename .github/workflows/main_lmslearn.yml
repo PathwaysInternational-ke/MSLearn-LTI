@@ -23,19 +23,22 @@ jobs:
           dotnet-version: '6.0.x' # or '6.0.x' / '8.0.x' depending on your project
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore Edna.Lite.sln
+        working-directory: backend
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build Edna.Lite.sln --configuration Release --no-restore
+        working-directory: backend
 
       - name: Publish
-        run: dotnet publish --configuration Release --output ./publish --no-build
+        run: dotnet publish Edna.Lite.sln --configuration Release --output ./publish --no-build
+        working-directory: backend
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: aspnetcore-app
-          path: ./publish
+          path: backend/publish
 
   deploy:
     runs-on: ubuntu-latest
