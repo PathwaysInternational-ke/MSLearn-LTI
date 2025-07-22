@@ -26,13 +26,16 @@ jobs:
           fi
 
       - name: Restore dependencies
-        run: dotnet restore Edna.Lite.sln
+        run: dotnet restore
+        working-directory: backend
 
       - name: Build
-        run: dotnet build Edna.Lite.sln --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore
+        working-directory: backend
 
       - name: Publish
-        run: dotnet publish Edna.Lite.sln --configuration Release --output ./backend/publish --no-build
+        run: dotnet publish --configuration Release --output ./publish --no-build
+        working-directory: backend
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
