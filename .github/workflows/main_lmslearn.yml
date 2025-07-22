@@ -14,19 +14,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET Core
+      - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
 
-      - name: Ensure nuget.org source exists
+      - name: Show .NET SDK info (for debugging)
+        run: dotnet --info
+
+      - name: Reset and add NuGet source
         run: |
-          if ! dotnet nuget list source | grep -q "nuget.org"; then
-            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
-          fi
+          dotnet nuget remove source nuget.org || true
+          dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+
+      - name: Add NuGet config file
+        run: |
+          echo '<?xml version="1.0" encoding="utf-8"?>' > nuget.config
+          echo '<configuration>' >> nuget.config
+          echo '  <packageSources>' >> nuget.config
+          echo '    <clear />' >> nuget.config
+          echo '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />' >> nuget.config
+          echo '  </packageSources>' >> nuget.config
+          echo '</configuration>' >> nuget.config
 
       - name: Restore dependencies
-        run: dotnet restore Edna.Lite.sln
+        run: dotnet restore Edna.Lite.sln --configfile ../../nuget.config
         working-directory: backend
 
       - name: Build
