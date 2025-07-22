@@ -22,8 +22,11 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Add NuGet Source
-        run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+      - name: Ensure nuget.org source exists
+        run: |
+          if ! dotnet nuget list source | grep -q "nuget.org"; then
+            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+          fi
 
       - name: Restore dependencies
         run: dotnet restore Edna.Lite.sln
