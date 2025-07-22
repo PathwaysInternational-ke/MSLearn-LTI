@@ -20,7 +20,10 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x' # or '6.0.x' / '8.0.x' depending on your project
+          dotnet-version: '6.0.x'
+
+      - name: Add NuGet Source
+        run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 
       - name: Restore dependencies
         run: dotnet restore Edna.Lite.sln
