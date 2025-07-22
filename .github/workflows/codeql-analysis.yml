@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [main]
   schedule:
     - cron: '0 8 * * 0'
@@ -14,8 +13,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
 
-    permissions: 
-      # Required for all workflows 
+    permissions:
       security-events: write
       actions: read
 
@@ -28,14 +26,19 @@ jobs:
       - run: git checkout HEAD^2
         if: ${{ github.event_name == 'pull_request' }}
 
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'  # You can adjust this based on your project
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
-        # Uncomment and set this to your project's languages if needed
-        # with:
-        #   languages: go, javascript, csharp, python, cpp, java
+        with:
+          languages: csharp
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # ❌ Replace autobuild with manual build
+      - name: Build C# Solution
+        run: dotnet build backend/Edna.Lite.sln --configuration Release
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
