@@ -25,19 +25,18 @@ class UsersServiceClass {
     return safeData(response);
   }
 
-  public async getCurrentUserImageBlob(): Promise<Blob> {
-    const authResponse: AuthResponse = await AppAuthConfig.acquireTokenSilent({ scopes: ['user.read'] });
-    const response = await axios.get('https://graph.microsoft.com/beta/me/photos/96x96/$value', {
-      headers: {
-        common: {
-          Authorization: `bearer ${authResponse.accessToken}`
-        }
-      },
-      responseType: 'blob'
-    });
+public async getCurrentUserImageBlob(): Promise<Blob> {
+  const authResponse: AuthResponse = await AppAuthConfig.acquireTokenSilent({ scopes: ['user.read'] });
+  const response = await axios.get('https://graph.microsoft.com/beta/me/photos/96x96/$value', {
+    headers: {
+      Authorization: `Bearer ${authResponse.accessToken}`
+    },
+    responseType: 'blob'
+  });
 
-    return response.data;
-  }
+  return response.data;
+}
+
 }
 
 export const UsersService = new UsersServiceClass();
