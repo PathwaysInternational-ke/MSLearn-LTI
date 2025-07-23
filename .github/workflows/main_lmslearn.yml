@@ -14,12 +14,14 @@ jobs:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
 
+      # Set up Node.js for frontend
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
-      - name: 📦 Install frontend dependencies and build
+      # Install frontend dependencies and build
+      - name: 📦 Build frontend
         run: |
           npm install
           npm run build
@@ -27,26 +29,35 @@ jobs:
         env:
           NODE_OPTIONS: --openssl-legacy-provider
 
-      - name: 📁 Copy frontend build to Azure Function wwwroot
+      # Copy frontend build into backend wwwroot
+      - name: 📁 Copy frontend to backend wwwroot
         run: |
-          mkdir -p backend/Functions/Edna.AssignmentLearnContent/wwwroot
-          rm -rf backend/Functions/Edna.AssignmentLearnContent/wwwroot/*
-          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/wwwroot/
+          mkdir -p backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot
+          rm -rf backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot/*
+          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot/
 
-      - name: ⚙️ Setup .NET
+      # Set up .NET 6 for backend
+      - name: ⚙️ Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
 
-      - name: 🔄 Restore .NET dependencies
+      # Restore .NET dependencies
+      - name: 🔄 Restore .NET
         run: dotnet restore backend/Edna.Lite.sln
 
-      - name: 🏗️ Build .NET solution
+      # Build .NET backend
+      - name: 🏗️ Build .NET backend
         run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
 
-      - name: 📦 Publish Azure Function project
-        run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
+      # Publish Azure Function backend project
+      - name: 📦 Publish Azure Function
+        run: |
+          dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj \
+            --configuration Release \
+            --output ./publish
 
+      # Deploy to Azure
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
