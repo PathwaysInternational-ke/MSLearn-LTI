@@ -29,31 +29,29 @@ jobs:
 
       - name: 📁 Copy frontend build to Azure Function wwwroot
         run: |
-          mkdir -p backend/Functions/Edna.AssignmentLearnContent/wwwroot
-          rm -rf backend/Functions/Edna.AssignmentLearnContent/wwwroot/*
-          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/wwwroot/
+          mkdir -p Functions/Edna.AssignmentLearnContent/wwwroot
+          rm -rf Functions/Edna.AssignmentLearnContent/wwwroot/*
+          cp -r ../client/build/* Functions/Edna.AssignmentLearnContent/wwwroot/
+        working-directory: backend
 
-      - name: ⚙️ Setup .NET
+      - name: ⚙️ Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x' # Change if you're using .NET 7 or 8
+          dotnet-version: '6.0.x'
 
       - name: 🔄 Restore .NET dependencies
-        run: dotnet restore Edna.Lite.sln
-        working-directory: backend
+        run: dotnet restore backend/Edna.Lite.sln
 
       - name: 🏗️ Build .NET solution
-        run: dotnet build Edna.Lite.sln --configuration Release --no-restore
-        working-directory: backend
+        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
 
       - name: 📦 Publish Azure Function project
         run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
-        working-directory: backend
 
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'lmslearn' # Change this to your actual Azure Web App name
+          app-name: 'lmslearn' # Replace with your actual Azure Web App name
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4C167E16F07A42729F04C953601AE104 }}
           package: ./publish
