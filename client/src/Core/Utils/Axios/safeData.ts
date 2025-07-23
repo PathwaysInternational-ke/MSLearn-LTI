@@ -17,7 +17,7 @@ export type WithError<T> = T & { error?: ServiceError };
 export const safeData = <T>(response: AxiosResponse<T>): WithError<T> => {
   return response.status < 200 || response.status >= 300
     ? { ...response.data, error: errorNumberToEnumMap.get(response.status) || 'other' }
-    : response.data;
+    : { ...response.data, error: undefined }; // 👈 ensures `error` field is always present (or undefined)
 };
 
 export const getServiceError = <T>(response: AxiosResponse<T>): ServiceError | null => {
