@@ -37,15 +37,13 @@ export class UsersStore extends ChildStore {
     ).pipe(
       filter(platformObservable => !!platformObservable),
       map(() => AppAuthConfig.getAccountInfo()?.account),
-      filter(account => !!account),
-      filter(account => !!account?.name),
-      map(account => account!),
+      filter((account): account is Account => account !== undefined && !!account.name),
       map(account => this.accountToUserModel(account))
     );
 
     const getUser = async (assignmentId: string): Promise<WithError<UserDto>> => {
       const user = await UsersService.getCurrentUserDetails(assignmentId);
-      if (user.error) {
+      if (user.error !== undefined) {
         this.errorContent = ErrorPageContent.CreateFromServiceError(user.error);
       } else if (!user) {
         this.errorContent = { errorMsg: 'You are not enrolled in this course.', icon: 'BlockContact' };
@@ -54,6 +52,7 @@ export class UsersStore extends ChildStore {
       }
       return user;
     };
+
     const detailsFromAssignment = toObservable(() => this.root.assignmentStore.assignment).pipe(
       filter(assignment => !!assignment),
       map(assignment => assignment!.id),
@@ -83,8 +82,7 @@ export class UsersStore extends ChildStore {
 
     this.participants = _.sortBy(
       participants.map(user => this.userDtoToModel(user)),
-      'role',
-      'familyName'
+      ['role', 'familyName']
     );
   }
 
@@ -99,11 +97,12 @@ export class UsersStore extends ChildStore {
       ...userDto
     };
   }
+
   private accountToUserModel(account: Account): User {
     return {
       roleDisplayName: '',
-      displayName: account?.name || '',
-      email: account?.userName || ''
+      displayName: account.name || '',
+      email: account.userName || ''
     };
   }
 }
