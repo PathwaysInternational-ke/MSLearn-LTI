@@ -8,20 +8,26 @@ on:
 
 jobs:
   build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
 
+      - name: ⚙️ Setup Node.js
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
       - name: 📦 Install frontend dependencies and build
+      - name: 📦 Install frontend dependencies and build
         run: |
           npm install
+          npm run build
           npm run build
         working-directory: client
         env:
@@ -29,21 +35,20 @@ jobs:
 
       - name: 📁 Copy frontend build to Azure Function wwwroot
         run: |
-          mkdir -p Functions/Edna.AssignmentLearnContent/wwwroot
-          rm -rf Functions/Edna.AssignmentLearnContent/wwwroot/*
-          cp -r ../client/build/* Functions/Edna.AssignmentLearnContent/wwwroot/
-        working-directory: backend
+          mkdir -p backend/Functions/Edna.AssignmentLearnContent/wwwroot
+          rm -rf backend/Functions/Edna.AssignmentLearnContent/wwwroot/*
+          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/wwwroot/
 
-      - name: ⚙️ Setup .NET SDK
+      - name: ⚙️ Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.x' # Change if you're using .NET 7 or 8
 
       - name: 🔄 Restore .NET dependencies
-        run: dotnet restore backend/Edna.Lite.sln
+        run: dotnet restore Edna.Lite.sln
 
       - name: 🏗️ Build .NET solution
-        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
+        run: dotnet build Edna.Lite.sln --configuration Release --no-restore
 
       - name: 📦 Publish Azure Function project
         run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
@@ -51,7 +56,71 @@ jobs:
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'lmslearn' # Replace with your actual Azure Web App name
+          app-name: 'lmslearn' # Change this to your actual Azure Web App name
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4C167E16F07A42729F04C953601AE104 }}
           package: ./publish
+
+
+# name: Build and deploy Node.js app to Azure Web App - lmslearn
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Set up Node.js version
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18.x'
+
+#       - name: npm install, build, and test
+#         run: |
+#           npm install
+#           npm run build --if-present
+#           npm run test --if-present
+#         working-directory: client
+#         env:
+#           NODE_OPTIONS: --openssl-legacy-provider
+
+#       - name: Zip artifact for deployment
+#         run: zip -r ../release.zip ./
+#         working-directory: client
+
+#       - name: Upload artifact for deployment job
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: node-app
+#           path: release.zip
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: build
+
+#     steps:
+#       - name: Download artifact from build job
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: node-app
+
+#       - name: Unzip artifact for deployment
+#         run: unzip release.zip
+
+#       - name: 'Deploy to Azure Web App'
+#         id: deploy-to-webapp
+#         uses: azure/webapps-deploy@v3
+#         with:
+#           app-name: 'lmslearn'
+#           slot-name: 'Production'
+#           package: .
+#           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4C167E16F07A42729F04C953601AE104 }}

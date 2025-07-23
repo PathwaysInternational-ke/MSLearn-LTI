@@ -27,6 +27,11 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <!-- ✅ Include all files under wwwroot during publish -->
+  <ItemGroup>
+    <Content Include="wwwroot\**\*.*" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
 
 
