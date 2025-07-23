@@ -1,20 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-    <LangVersion>10</LangVersion> <!-- C# 10 for .NET 6 -->
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" />
+    <PackageReference Include="Azure.Data.Tables" Version="12.8.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Tables" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Bindings\Edna.Bindings.User\Edna.Bindings.User.csproj" />
+    <ProjectReference Include="..\..\..\Utils\Edna.Utils.Http\Edna.Utils.Http\Edna.Utils.Http.csproj" />
     <ProjectReference Include="..\..\..\Utils\Edna.Utils.Linq\Edna.Utils.Linq\Edna.Utils.Linq.csproj" />
   </ItemGroup>
 
@@ -28,12 +34,7 @@
     </None>
   </ItemGroup>
 
-  <!-- ✅ Include all files under wwwroot during publish -->
-  <ItemGroup>
-    <Content Include="wwwroot\**\*.*" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
 </Project>
-
 
 <!-- <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
