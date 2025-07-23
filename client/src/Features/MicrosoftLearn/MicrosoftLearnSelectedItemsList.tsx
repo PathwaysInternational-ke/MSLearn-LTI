@@ -65,7 +65,7 @@ const MicrosoftLearnSelectedItemsListInner = ({
               learnStore.catalog ? (
                 <MicrosoftLearnSelectedItem key={item.contentUid} itemId={item.contentUid} />
               ) : (
-                <MicrosoftLearnSelectedItemShimmer />
+                <MicrosoftLearnSelectedItemShimmer key={item.contentUid} />
               )
             )}
           </div>
