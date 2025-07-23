@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import _ from 'lodash';
-import { action, observable } from 'mobx';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { observable, action } from 'mobx';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import {
   getUpdatedURIFromSelectedFilters,
   loadExpandedProductsFromQueryParams,

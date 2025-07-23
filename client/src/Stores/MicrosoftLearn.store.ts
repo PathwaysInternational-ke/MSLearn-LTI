@@ -4,7 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ChildStore } from './Core';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { observable, action } from 'mobx';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import { Catalog, LearnContent, Product } from '../Models/Learn';
 import { MicrosoftLearnService } from '../Services/MicrosoftLearn.service';
 import { CatalogDto, ProductChildDto, ProductDto } from '../Dtos/Learn';

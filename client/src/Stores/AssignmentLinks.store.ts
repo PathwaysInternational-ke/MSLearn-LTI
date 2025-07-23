@@ -3,7 +3,9 @@
  *  Licensed under the MIT License.
  *--------------------------------------------------------------------------------------------*/
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { observable, action } from 'mobx';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import _ from 'lodash';
 import { ChildStore } from './Core';
 import { AssignmentLink } from '../Models/AssignmentLink.model';

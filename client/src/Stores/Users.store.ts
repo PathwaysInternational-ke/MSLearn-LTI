@@ -3,7 +3,9 @@
  *  Licensed under the MIT License.
  *--------------------------------------------------------------------------------------------*/
 
-import { action, observable } from 'mobx';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { observable, action } from 'mobx';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import { ChildStore } from './Core';
 import { UsersService } from '../Services/Users.service';
 import { toObservable } from '../Core/Utils/Mobx/toObservable';
