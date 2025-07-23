@@ -17,6 +17,7 @@ class UsersServiceClass {
 
     return safeData(response);
   }
+
   public async getAllParticipantsDetails(assignmentId: string): Promise<WithError<UserDto[]>> {
     const response = await axios.get<UserDto[]>(
       `${process.env.REACT_APP_EDNA_USERS_SERVICE_URL}/assignments/${assignmentId}/users`
@@ -25,18 +26,20 @@ class UsersServiceClass {
     return safeData(response);
   }
 
-public async getCurrentUserImageBlob(): Promise<Blob> {
-  const authResponse: AuthResponse = await AppAuthConfig.acquireTokenSilent({ scopes: ['user.read'] });
-  const response = await axios.get('https://graph.microsoft.com/beta/me/photos/96x96/$value', {
-    headers: {
-      Authorization: `Bearer ${authResponse.accessToken}`
-    },
-    responseType: 'blob'
-  });
+  public async getCurrentUserImageBlob(): Promise<Blob> {
+    const authResponse: AuthResponse = await AppAuthConfig.acquireTokenSilent({
+      scopes: ['user.read'],
+    });
 
-  return response.data;
-}
+    const response = await axios.get('https://graph.microsoft.com/beta/me/photos/96x96/$value', {
+      headers: {
+        Authorization: `Bearer ${authResponse.accessToken}`,
+      },
+      responseType: 'blob',
+    });
 
+    return response.data;
+  }
 }
 
 export const UsersService = new UsersServiceClass();
