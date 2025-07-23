@@ -19,7 +19,7 @@ export class RootStore {
 
   constructor() {
     const childStores: ChildStore[] = Object.keys(this)
-      .map(key => Reflect.get(this, key))
+      .map(key => Reflect.get(this, key) as ChildStore)
       .filter(value => value instanceof ChildStore);
 
     childStores.forEach(store => store.setRootStore(this));
