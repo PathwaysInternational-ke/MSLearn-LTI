@@ -40,12 +40,15 @@ jobs:
 
       - name: 🔄 Restore .NET dependencies
         run: dotnet restore Edna.Lite.sln
+        working-directory: backend
 
       - name: 🏗️ Build .NET solution
         run: dotnet build Edna.Lite.sln --configuration Release --no-restore
+        working-directory: backend
 
       - name: 📦 Publish Azure Function project
         run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
+        working-directory: backend
 
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
