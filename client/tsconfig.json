@@ -22,7 +22,7 @@
     "downlevelIteration": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "types": []
+    "types": ["jest"]
   },
   "include": ["src"]
 }
