@@ -29,9 +29,9 @@ jobs:
 
       - name: 📁 Copy frontend build to Azure Function wwwroot
         run: |
-          mkdir -p backend/Functions/Edna.AssignmentLearnContent/wwwroot
-          rm -rf backend/Functions/Edna.AssignmentLearnContent/wwwroot/*
-          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/wwwroot/
+          mkdir -p backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot
+          rm -rf backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot/*
+          cp -r client/build/* backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/wwwroot/
 
       - name: ⚙️ Setup .NET
         uses: actions/setup-dotnet@v3
@@ -45,7 +45,7 @@ jobs:
         run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore
 
       - name: 📦 Publish Azure Function project
-        run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
+        run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj --configuration Release --output ./publish
 
       - name: 🚀 Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
