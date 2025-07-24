@@ -23,9 +23,13 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      # Add this step to restore NuGet packages
+      - name: Restore .NET dependencies
+        run: dotnet restore backend/Edna.Lite.sln
+
       - name: Build with dotnet
-        # Specify the path to your solution file
-        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore # Added --no-restore as restore is handled separately in the old workflow
+        # Now remove --no-restore because restore is handled by the previous step
+        run: dotnet build backend/Edna.Lite.sln --configuration Release 
 
       - name: dotnet publish
         # Specify the path to your main project file and output to a specific 'publish' folder
@@ -34,8 +38,8 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: dotnet-app-publish # Changed artifact name for clarity, but you can keep it as .net-app
-          path: ./publish # Path matches the output of dotnet publish
+          name: dotnet-app-publish
+          path: ./publish
 
   deploy:
     runs-on: windows-latest
@@ -45,7 +49,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: dotnet-app-publish # Must match the name used in the 'Upload artifact' step
+          name: dotnet-app-publish
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
