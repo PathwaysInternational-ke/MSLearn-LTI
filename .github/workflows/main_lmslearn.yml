@@ -24,16 +24,18 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        # Specify the path to your solution file
+        run: dotnet build backend/Edna.Lite.sln --configuration Release --no-restore # Added --no-restore as restore is handled separately in the old workflow
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        # Specify the path to your main project file and output to a specific 'publish' folder
+        run: dotnet publish backend/Functions/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent/Edna.AssignmentLearnContent.csproj -c Release -o "./publish"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: dotnet-app-publish # Changed artifact name for clarity, but you can keep it as .net-app
+          path: ./publish # Path matches the output of dotnet publish
 
   deploy:
     runs-on: windows-latest
@@ -43,7 +45,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: dotnet-app-publish # Must match the name used in the 'Upload artifact' step
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -51,5 +53,5 @@ jobs:
         with:
           app-name: 'lmslearn'
           slot-name: 'Production'
-          package: .
+          package: ./ # The downloaded artifact will be in the current directory, so '.' refers to it.
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C7FCBC867E1B4DD3A8E6E24AA1773B82 }}
