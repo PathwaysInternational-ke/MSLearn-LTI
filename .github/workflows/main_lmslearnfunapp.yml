@@ -40,4 +40,4 @@ jobs:
           app-name: 'lmslearnFunApp'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BBC87BD5816D4557967E3E155178C560 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0A809587BC14737B5D699E839322B19 }}
